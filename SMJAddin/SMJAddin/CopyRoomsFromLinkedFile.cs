@@ -77,6 +77,8 @@ namespace SMJAddin
                                     double limitOffsetInLinked = ro.LimitOffset;
                                     double baseOffset = ro.BaseOffset;
 
+                                    createdRoom.get_Parameter(BuiltInParameter.ROOM_LOWER_OFFSET).Set(baseOffset);
+
                                     if (upperLimitInLinked != null)
                                     {
                                         Level upperLevelInCurrent = null;
@@ -102,7 +104,6 @@ namespace SMJAddin
                                     }
                                     else
                                     {
-                                        createdRoom.get_Parameter(BuiltInParameter.ROOM_LOWER_OFFSET).Set(baseOffset);
                                         createdRoom.get_Parameter(BuiltInParameter.OFFSET_FROM_REFERENCE_BASE).Set(limitOffsetInLinked);
                                     }
                                 }
