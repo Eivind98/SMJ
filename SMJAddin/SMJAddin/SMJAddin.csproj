@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="ButtonBuilder.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Tester.cs" />
     <Compile Include="CopyRoomsFromLinkedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

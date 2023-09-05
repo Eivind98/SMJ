@@ -43,68 +43,63 @@ namespace SMJAddin
                     {
                         tx.Start("Creating Rooms");
 
-                        foreach (Room ro in roomsCollector)
+                        foreach (Room roomInLinkedModel in roomsCollector)
                         {
-                            if (ro != null && ro.Area != 0)
+                            if (roomInLinkedModel != null && roomInLinkedModel.Area != 0)
                             {
-                                double elevationInLinkedDocument = ro.Level.Elevation;
-                                Level theChosenLevel = null;
+                                XYZ xyzPoint = (roomInLinkedModel.Location as LocationPoint).Point;
+                                string name = roomInLinkedModel.LookupParameter("Name").AsValueString();
+                                string number = roomInLinkedModel.LookupParameter("Number").AsValueString();
+                                double test = roomInLinkedModel.UnboundedHeight/2;
+                                List<XYZ> points = new List<XYZ>() { xyzPoint, new XYZ(xyzPoint.X, xyzPoint.Y, xyzPoint.Z + test) };
+                                Room roomAtPoint = Helper.WhatRoomHasPoint(doc, points);
 
-                                FilteredElementCollector LevelsInCurrentDocument = new FilteredElementCollector(doc).OfClass(typeof(Level));
-
-                                foreach (Level level in LevelsInCurrentDocument.ToList())
+                                if (roomAtPoint != null)
                                 {
-                                    if (level.Elevation == elevationInLinkedDocument)
-                                    {
-                                        theChosenLevel = level;
-                                        break;
-                                    }
+                                    roomAtPoint.Name = name;
+                                    roomAtPoint.Number = number;
                                 }
-
-                                if (theChosenLevel != null)
+                                else
                                 {
-                                    XYZ xyzPoint = (ro.Location as LocationPoint).Point;
-                                    Room createdRoom = doc.Create.NewRoom(theChosenLevel, new UV(xyzPoint.X, xyzPoint.Y));
-                                    
-                                    string name = ro.LookupParameter("Name").AsValueString();
-                                    createdRoom.Name = name;
+                                    Level levelInLinkedModel = roomInLinkedModel.Level;
+                                    Level theChosenLevel = Helper.GetLevelInCurrentThatMatchesLinkedLevel(doc, levelInLinkedModel, roomInLinkedModel.BaseOffset);
 
-                                    string number = ro.LookupParameter("Number").AsValueString();
-                                    createdRoom.Number = number;
+                                    double theDifference = levelInLinkedModel.Elevation - theChosenLevel.Elevation;
 
-                                    Level upperLimitInLinked = ro.UpperLimit;
-
-                                    double limitOffsetInLinked = ro.LimitOffset;
-                                    double baseOffset = ro.BaseOffset;
-
-                                    createdRoom.get_Parameter(BuiltInParameter.ROOM_LOWER_OFFSET).Set(baseOffset);
-
-                                    if (upperLimitInLinked != null)
+                                    if (theChosenLevel != null)
                                     {
-                                        Level upperLevelInCurrent = null;
+                                        Room createdRoom = doc.Create.NewRoom(theChosenLevel, new UV(xyzPoint.X, xyzPoint.Y));
 
-                                        foreach (Level level in LevelsInCurrentDocument.ToList())
+                                        createdRoom.Name = name;
+                                        createdRoom.Number = number;
+
+                                        Level upperLevelLimitInLinked = roomInLinkedModel.UpperLimit;
+                                        double limitOffsetInLinked = roomInLinkedModel.LimitOffset;
+                                        double baseOffset = roomInLinkedModel.BaseOffset + theDifference;
+
+                                        createdRoom.get_Parameter(BuiltInParameter.ROOM_LOWER_OFFSET).Set(baseOffset);
+
+                                        if (upperLevelLimitInLinked != null)
                                         {
-                                            if (level.Elevation == upperLimitInLinked.Elevation)
+                                            Level upperLevelInCurrent = Helper.GetLevelInCurrentThatMatchesLinkedLevel(doc, upperLevelLimitInLinked, limitOffsetInLinked);
+
+                                            if (upperLevelInCurrent != null)
                                             {
-                                                upperLevelInCurrent = level;
-                                                break;
+                                                limitOffsetInLinked += upperLevelLimitInLinked.Elevation - upperLevelInCurrent.Elevation;
+                                                Parameter limitOffset = createdRoom.get_Parameter(BuiltInParameter.ROOM_UPPER_OFFSET);
+                                                limitOffset.Set(limitOffsetInLinked);
+                                                createdRoom.UpperLimit = upperLevelInCurrent;
                                             }
-                                        }
-                                        if (upperLevelInCurrent != null)
-                                        {
-                                            Parameter limitOffset = createdRoom.get_Parameter(BuiltInParameter.ROOM_UPPER_OFFSET);
-                                            limitOffset.Set(limitOffsetInLinked);
-                                            createdRoom.UpperLimit = upperLevelInCurrent;
+                                            else
+                                            {
+                                                double limtThingy = limitOffsetInLinked + (upperLevelLimitInLinked.Elevation - theChosenLevel.Elevation);
+                                                createdRoom.get_Parameter(BuiltInParameter.ROOM_UPPER_OFFSET).Set(limtThingy);
+                                            }
                                         }
                                         else
                                         {
-                                            createdRoom.LimitOffset = limitOffsetInLinked + (upperLimitInLinked.Elevation - theChosenLevel.Elevation);
+                                            createdRoom.get_Parameter(BuiltInParameter.OFFSET_FROM_REFERENCE_BASE).Set(limitOffsetInLinked + theDifference);
                                         }
-                                    }
-                                    else
-                                    {
-                                        createdRoom.get_Parameter(BuiltInParameter.OFFSET_FROM_REFERENCE_BASE).Set(limitOffsetInLinked);
                                     }
                                 }
                             }
