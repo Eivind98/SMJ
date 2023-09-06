@@ -2,7 +2,7 @@
 <RevitAddIns>
 	<AddIn Type="Application">
 		<Name>Application SMJAddin</Name>
-		<Assembly>SMJAddin.dll</Assembly>
+		<Assembly>C:\Program Files\Vormadal Brothers\SMJAddin\SMJAddin.dll</Assembly>
 		<AddInId>B8C5FCB0-F171-4BAE-B208-FD1480A2E29D</AddInId>
 		<FullClassName>SMJAddin.App</FullClassName>
 		<VendorId>com.vormadal</VendorId>

@@ -63,8 +63,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Pictures\IconRoomImport.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="SMJAddin.addin" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- <PropertyGroup> -->
   <!-- <PostBuildEvent>if exist "$(AppData)\Autodesk\REVIT\Addins\2024" copy "$(ProjectDir)*.addin" "$(AppData)\Autodesk\REVIT\Addins\2024" -->
