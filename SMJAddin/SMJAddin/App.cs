@@ -21,14 +21,14 @@ namespace SMJAddin
             application.CreateRibbonTab(tabName);
 
             // Add a new ribbon panel
-            RibbonPanel panel = application.CreateRibbonPanel(tabName, "SMJAddin Tab");
+            RibbonPanel panelAddin = application.CreateRibbonPanel(tabName, "SMJAddin Tab");
 
-            //C:\Program Files\Vormadal Brothers\SMJAddin\Pictures
+            //C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\
 
             new ButtonBuilder("Export IFC", typeof(CopyRoomsFromLinkedFile))
                 .ImagePath("C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\IconRoomImport.png")
-                .Text("SMJAddin")
-                .Build(panel);
+                .Text("Create or update\nrooms from Linked file")
+                .Build(panelAddin);
 
             return Result.Succeeded;
         }

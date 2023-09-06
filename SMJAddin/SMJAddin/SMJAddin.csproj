@@ -53,20 +53,34 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2023\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="ButtonBuilder.cs" />
-    <Compile Include="Helper.cs" />
-    <Compile Include="Tester.cs" />
-    <Compile Include="CopyRoomsFromLinkedFile.cs" />
+    <Compile Include="LevelMethods.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Commands\Tester.cs" />
+    <Compile Include="Commands\CopyRoomsFromLinkedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoomMethods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pictures\IconRoomImport.png">
+    <Content Include="Pictures\IconRoomImport.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SMJAddin.addin" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="SMJAddin.addin" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

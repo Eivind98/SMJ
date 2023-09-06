@@ -2014,6 +2014,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_16EE8E38932402673A3E23DFD7FB3773"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2363,12 +2369,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_894BB3FCD85465726632482B84160656"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_16EE8E38932402673A3E23DFD7FB3773"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -4384,7 +4384,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SMJAddin"
         "ProductCode" = "8:{6206095D-7851-4A3C-BB27-61019FC2ECE5}"
-        "PackageCode" = "8:{1F507686-6D7A-43D6-BD30-D757AE09E7B5}"
+        "PackageCode" = "8:{741132DA-C606-4198-93FE-2854E3F97668}"
         "UpgradeCode" = "8:{496E59E3-48F5-4F60-9FFD-3E0AC74FF842}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -4925,6 +4925,34 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{7FE549FC-5E67-42EC-9739-4AC954B2299D}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_BE87CC785A9A4DB9B962ED0781B27785"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ContentFiles"
             "OutputProjectGuid" = "8:{7FE549FC-5E67-42EC-9739-4AC954B2299D}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"

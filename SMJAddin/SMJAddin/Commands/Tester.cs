@@ -57,7 +57,7 @@ namespace SMJAddin
                             task.Show();
 
 
-                            Room roomThatIsSimilar = Helper.WhatRoomIsAlmostTheSame(doc, roomInLinkedModel);
+                            Room roomThatIsSimilar = RoomMethods.WhatRoomIsAlmostTheSame(doc, roomInLinkedModel);
 
                             if (roomThatIsSimilar != null)
                             {
@@ -67,7 +67,7 @@ namespace SMJAddin
                             else
                             {
                                 Level levelInLinkedModel = roomInLinkedModel.Level;
-                                Level theChosenLevel = Helper.GetLevelInCurrentThatMatchesLinkedLevel(doc, levelInLinkedModel, roomInLinkedModel.BaseOffset);
+                                Level theChosenLevel = LevelMethods.GetLevelInCurrentThatMatchesLinkedLevel(doc, levelInLinkedModel, roomInLinkedModel.BaseOffset);
 
                                 double theDifference = levelInLinkedModel.Elevation - theChosenLevel.Elevation;
 
@@ -86,7 +86,7 @@ namespace SMJAddin
 
                                     if (upperLevelLimitInLinked != null)
                                     {
-                                        Level upperLevelInCurrent = Helper.GetLevelInCurrentThatMatchesLinkedLevel(doc, upperLevelLimitInLinked, limitOffsetInLinked);
+                                        Level upperLevelInCurrent = LevelMethods.GetLevelInCurrentThatMatchesLinkedLevel(doc, upperLevelLimitInLinked, limitOffsetInLinked);
 
                                         if (upperLevelInCurrent != null)
                                         {

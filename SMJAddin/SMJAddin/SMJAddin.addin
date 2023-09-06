@@ -6,6 +6,6 @@
 		<AddInId>B8C5FCB0-F171-4BAE-B208-FD1480A2E29D</AddInId>
 		<FullClassName>SMJAddin.App</FullClassName>
 		<VendorId>com.vormadal</VendorId>
-		<VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+		<VendorDescription>Eivind - eev@smj.fo</VendorDescription>
 	</AddIn>
 </RevitAddIns>
