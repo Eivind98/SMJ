@@ -25,9 +25,19 @@ namespace SMJAddin
 
             //C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\
 
-            new ButtonBuilder("Export IFC", typeof(CopyRoomsFromLinkedFile))
+            new ButtonBuilder("CreateOrUpdateRoomFromLinkedFile", typeof(CopyRoomsFromLinkedFile))
                 .ImagePath("C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\IconRoomImport.png")
                 .Text("Create or update\nrooms from Linked file")
+                .Build(panelAddin);
+
+            new ButtonBuilder("MoveRoomLocationToRoomCenteroid", typeof(MoveRoomLocationToCenter))
+                .ImagePath("C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\CenterRooms.png")
+                .Text("Move Room Location\nTo Centeroid")
+                .Build(panelAddin);
+
+            new ButtonBuilder("MoveTagsToRoomLocation", typeof(MoveTagsToRoomLocation))
+                .ImagePath("C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\MoveTagsToRoom.png")
+                .Text("Move Tags to\nRoom Location")
                 .Build(panelAddin);
 
             return Result.Succeeded;

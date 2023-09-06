@@ -4384,7 +4384,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SMJAddin"
         "ProductCode" = "8:{6206095D-7851-4A3C-BB27-61019FC2ECE5}"
-        "PackageCode" = "8:{741132DA-C606-4198-93FE-2854E3F97668}"
+        "PackageCode" = "8:{B77C3A4E-2D38-43F9-B9BE-21DA73CB6E7A}"
         "UpgradeCode" = "8:{496E59E3-48F5-4F60-9FFD-3E0AC74FF842}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -4504,6 +4504,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_9ED3BA785C2A4C40A579272C069961FD"
+            {
+            "Name" = "8:Shortcut to Primary output from SMJAddin (Active)"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
+            "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
+            "WorkingFolder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -4905,7 +4919,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9E22B0E4F5EF426FA9759FBA7F33CE53"
             {
-            "SourcePath" = "8:..\\SMJAddin\\obj\\Debug\\SMJAddin.dll"
+            "SourcePath" = "8:..\\SMJAddin\\obj\\Release\\SMJAddin.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"

@@ -7,10 +7,130 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.UI;
 
+
 namespace SMJAddin
 {
     public static class RoomMethods
     {
+        public static Room AlignRoomX(Room room, View3D view)
+        {
+            var test = new ReferenceIntersector(view);
+            test.FindReferencesInRevitLinks = true;
+
+            XYZ roomLocation = (room.Location as LocationPoint).Point;
+
+            var Right = test.FindNearest(roomLocation, new XYZ(1,0,0)).Proximity;
+            var Left = test.FindNearest(roomLocation, new XYZ(-1, 0, 0)).Proximity;
+
+            
+
+            double total = Left-((Right+Left)/2);
+
+            XYZ newPoint = new XYZ(roomLocation.X - total, roomLocation.Y, roomLocation.Z + (room.UnboundedHeight/2));
+
+            if (room.IsPointInRoom(newPoint))
+            {
+                XYZ translation = newPoint.Subtract(roomLocation);
+                room.Location.Move(translation);
+            }
+
+
+            return room;
+        }
+
+        public static Room AlignRoomY(Room room, View3D view)
+        {
+            var test = new ReferenceIntersector(view);
+            test.FindReferencesInRevitLinks = true;
+
+            XYZ roomLocation = (room.Location as LocationPoint).Point;
+
+            var up = test.FindNearest(roomLocation, new XYZ(0, 1, 0)).Proximity;
+            var down = test.FindNearest(roomLocation, new XYZ(0, -1, 0)).Proximity;
+
+            double halfOfTotal = down - ((up + down) / 2);
+
+            XYZ newPoint = new XYZ(roomLocation.X, roomLocation.Y - halfOfTotal, roomLocation.Z + (room.UnboundedHeight / 2));
+
+            if (room.IsPointInRoom(newPoint))
+            {
+                XYZ translation = newPoint.Subtract(roomLocation);
+                room.Location.Move(translation);
+            }
+
+
+            return room;
+        }
+
+
+        public static Room MoveRoomLocationToCenter(Document doc, Room room)
+        {
+            if (room == null || room.Area == 0)
+            {
+                return null;
+            }
+
+
+            SpatialElementGeometryCalculator calculator = new SpatialElementGeometryCalculator(doc);
+            var bro = calculator.IsValidObject;
+            SpatialElementGeometryResults results = calculator.CalculateSpatialElementGeometry(room);
+            
+            Solid roomSolid = results.GetGeometry();
+
+            PlanarFace planar = null;
+
+            foreach (Face face in roomSolid.Faces)
+            {
+                PlanarFace pf = face as PlanarFace;
+                if (pf != null)
+                {
+                    if (pf.FaceNormal.Z == -1)
+                    {
+                        planar = pf;
+                        break;
+                    }
+                }
+            }
+
+            if(planar == null)
+            {
+                return null;
+            }
+
+            EdgeArray edges = planar.EdgeLoops.get_Item(0);
+            List<XYZ> test = new List<XYZ>();
+
+            foreach (Edge edge in edges)
+            {
+                test.Add(edge.AsCurve().GetEndPoint(0));
+                test.Add(edge.AsCurve().GetEndPoint(1));
+            }
+
+            var maxX = test.Max(i => i.X);
+            var maxY = test.Max(i => i.Y);
+            var maxZ = test.Max(i => i.Z);
+
+            var minX = test.Min(i => i.X);
+            var minY = test.Min(i => i.Y);
+            var minZ = test.Min(i => i.Z);
+
+            var x = (maxX + minX) / 2;
+            var y = (maxY + minY) / 2;
+            var z = (maxZ + minZ) / 2;
+
+            XYZ roomLocation = (room.Location as LocationPoint).Point;
+            XYZ centeroid = new XYZ(x, y, z);
+            
+            if (room.IsPointInRoom(centeroid))
+            {
+                XYZ translation = centeroid.Subtract(roomLocation);
+                room.Location.Move(translation);
+            }
+
+            return room;
+        }
+
+
         public static Room CreateOrUpdateRoomFromLinkedFile(Document currentDoc, Room roomFromLinkedFile)
         {
             string name = roomFromLinkedFile.LookupParameter("Name").AsValueString();
@@ -220,7 +340,6 @@ namespace SMJAddin
 
             return output;
         }
-
 
     }
 }

@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class Tester : IExternalCommand
+    public class MoveRoomLocationToCenter : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -28,24 +28,19 @@ namespace SMJAddin
             var app = uiapp.Application;
             var doc = uidoc.Document;
 
-            // Access current selection
-
-            Room room = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).First(i => i.Id.IntegerValue == 857279) as Room;
-
-            View3D view = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Views).First(i => i.Id.IntegerValue == 960621) as View3D;
-
             using (var tx = new Transaction(doc))
             {
-                tx.Start("Creating Rooms");
+                tx.Start("Moving Rooms");
 
-                RoomMethods.AlignRoomX(room, view);
-                RoomMethods.AlignRoomY(room, view);
+                var rooms = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms);
 
-
+                foreach (Room room in rooms)
+                {
+                    RoomMethods.MoveRoomLocationToCenter(doc, room);
+                }
 
                 tx.Commit();
             }
-
 
             return Result.Succeeded;
         }
