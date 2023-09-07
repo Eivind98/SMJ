@@ -16,6 +16,7 @@ namespace SMJAddin
     {
         public Result OnStartup(UIControlledApplication application)
         {
+            
             // Create a custom ribbon tab
             var tabName = "SMJ";
             application.CreateRibbonTab(tabName);
@@ -26,17 +27,17 @@ namespace SMJAddin
             //C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\
 
             new ButtonBuilder("CreateOrUpdateRoomFromLinkedFile", typeof(CopyRoomsFromLinkedFile))
-                .ImagePath("C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\IconRoomImport.png")
+                .ImagePath($"{Global.ApplicationPath}\\Pictures\\IconRoomImport.png")
                 .Text("Create or update\nrooms from Linked file")
                 .Build(panelAddin);
 
             new ButtonBuilder("MoveRoomLocationToRoomCenteroid", typeof(MoveRoomLocationToCenter))
-                .ImagePath("C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\CenterRooms.png")
+                .ImagePath($"{Global.ApplicationPath}\\Pictures\\CenterRooms.png")
                 .Text("Move Room Location\nTo Centeroid")
                 .Build(panelAddin);
 
             new ButtonBuilder("MoveTagsToRoomLocation", typeof(MoveTagsToRoomLocation))
-                .ImagePath("C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\MoveTagsToRoom.png")
+                .ImagePath($"{Global.ApplicationPath}\\Pictures\\MoveTagsToRoom.png")
                 .Text("Move Tags to\nRoom Location")
                 .Build(panelAddin);
 

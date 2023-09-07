@@ -12,6 +12,48 @@ namespace SMJAddin
 {
     public static class RoomMethods
     {
+        public static Room TryMoveRoomLocationToCenter(Room room)
+        {
+            return TryMoveRoomLocationToCenter(room, ViewMethods.CreateViewForRay(room.Document));
+        }
+
+        public static Room TryMoveRoomLocationToCenter(Room room, View3D view)
+        {
+            MoveRoomLocationToCentroid(room.Document, room);
+            Room output = AlignRoomXY(room, view);
+
+            return output;
+        }
+
+
+        public static Room AlignRoomXY(Room room, View3D view)
+        {
+            var test = new ReferenceIntersector(view);
+            test.FindReferencesInRevitLinks = true;
+
+            XYZ roomLocation = (room.Location as LocationPoint).Point;
+
+            var Right = test.FindNearest(roomLocation, new XYZ(1, 0, 0)).Proximity;
+            var Left = test.FindNearest(roomLocation, new XYZ(-1, 0, 0)).Proximity;
+
+            var up = test.FindNearest(roomLocation, new XYZ(0, 1, 0)).Proximity;
+            var down = test.FindNearest(roomLocation, new XYZ(0, -1, 0)).Proximity;
+
+            double halfOfTotalX = Left - ((Right + Left) / 2);
+            double halfOfTotalY = down - ((up + down) / 2);
+
+            XYZ newPoint = new XYZ(roomLocation.X - halfOfTotalX, roomLocation.Y - halfOfTotalY, roomLocation.Z + (room.UnboundedHeight / 2));
+
+            if (room.IsPointInRoom(newPoint))
+            {
+                XYZ translation = newPoint.Subtract(roomLocation);
+                room.Location.Move(translation);
+            }
+
+            return room;
+        }
+
+
         public static Room AlignRoomX(Room room, View3D view)
         {
             var test = new ReferenceIntersector(view);
@@ -19,14 +61,12 @@ namespace SMJAddin
 
             XYZ roomLocation = (room.Location as LocationPoint).Point;
 
-            var Right = test.FindNearest(roomLocation, new XYZ(1,0,0)).Proximity;
+            var Right = test.FindNearest(roomLocation, new XYZ(1, 0, 0)).Proximity;
             var Left = test.FindNearest(roomLocation, new XYZ(-1, 0, 0)).Proximity;
 
-            
+            double halfOfTotal = Left - ((Right + Left) / 2);
 
-            double total = Left-((Right+Left)/2);
-
-            XYZ newPoint = new XYZ(roomLocation.X - total, roomLocation.Y, roomLocation.Z + (room.UnboundedHeight/2));
+            XYZ newPoint = new XYZ(roomLocation.X - halfOfTotal, roomLocation.Y, roomLocation.Z + (room.UnboundedHeight / 2));
 
             if (room.IsPointInRoom(newPoint))
             {
@@ -63,20 +103,17 @@ namespace SMJAddin
         }
 
 
-        public static Room MoveRoomLocationToCenter(Document doc, Room room)
+        public static Room MoveRoomLocationToCentroid(Document doc, Room room)
         {
             if (room == null || room.Area == 0)
             {
                 return null;
             }
 
-
             SpatialElementGeometryCalculator calculator = new SpatialElementGeometryCalculator(doc);
-            var bro = calculator.IsValidObject;
             SpatialElementGeometryResults results = calculator.CalculateSpatialElementGeometry(room);
-            
-            Solid roomSolid = results.GetGeometry();
 
+            Solid roomSolid = results.GetGeometry();
             PlanarFace planar = null;
 
             foreach (Face face in roomSolid.Faces)
@@ -92,7 +129,7 @@ namespace SMJAddin
                 }
             }
 
-            if(planar == null)
+            if (planar == null)
             {
                 return null;
             }
@@ -120,7 +157,7 @@ namespace SMJAddin
 
             XYZ roomLocation = (room.Location as LocationPoint).Point;
             XYZ centeroid = new XYZ(x, y, z);
-            
+
             if (room.IsPointInRoom(centeroid))
             {
                 XYZ translation = centeroid.Subtract(roomLocation);

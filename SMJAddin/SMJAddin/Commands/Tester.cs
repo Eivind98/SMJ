@@ -30,17 +30,17 @@ namespace SMJAddin
 
             // Access current selection
 
-            Room room = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).First(i => i.Id.IntegerValue == 857279) as Room;
-
-            View3D view = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Views).First(i => i.Id.IntegerValue == 960621) as View3D;
-
             using (var tx = new Transaction(doc))
             {
-                tx.Start("Creating Rooms");
+                tx.Start("Moving Rooms");
 
-                RoomMethods.AlignRoomX(room, view);
-                RoomMethods.AlignRoomY(room, view);
+                Room room = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms).First(i => i.Id.IntegerValue == 857279) as Room;
 
+                //RoomMethods.MoveRoomLocationToCentroid(doc, room);
+
+                RoomMethods.AlignRoomXY(room, ViewMethods.CreateViewForRay(doc));
+
+                //RoomMethods.TryMoveRoomLocationToCenter(room);
 
 
                 tx.Commit();

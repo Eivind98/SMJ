@@ -33,10 +33,12 @@ namespace SMJAddin
                 tx.Start("Moving Rooms");
 
                 var rooms = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms);
+                
+                View3D view = ViewMethods.CreateViewForRay(doc);
 
                 foreach (Room room in rooms)
                 {
-                    RoomMethods.MoveRoomLocationToCenter(doc, room);
+                    RoomMethods.TryMoveRoomLocationToCenter(room, view);
                 }
 
                 tx.Commit();
