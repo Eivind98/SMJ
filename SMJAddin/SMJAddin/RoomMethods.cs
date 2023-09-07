@@ -49,6 +49,11 @@ namespace SMJAddin
                 XYZ translation = newPoint.Subtract(roomLocation);
                 room.Location.Move(translation);
             }
+            else
+            {
+                AlignRoomX(room, view);
+
+            }
 
             return room;
         }
