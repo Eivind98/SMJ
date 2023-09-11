@@ -65,8 +65,7 @@ namespace SMJAddin
                 BuiltInCategory.OST_StructuralFraming,
                 BuiltInCategory.OST_Columns,
                 BuiltInCategory.OST_Railings,
-                BuiltInCategory.OST_DuctFitting,
-                BuiltInCategory.OST_DuctSystem
+                BuiltInCategory.OST_DuctFitting
             };
 
             newView.IsSectionBoxActive = false;

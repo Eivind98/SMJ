@@ -201,8 +201,11 @@ namespace SMJAddin
                 XYZ xyzPoint = (roomFromLinkedFile.Location as LocationPoint).Point;
                 Space createdSpace = currentDoc.Create.NewSpace(theChosenLevel, new UV(xyzPoint.X, xyzPoint.Y));
 
-                createdSpace.Name = roomFromLinkedFile.Name;
-                createdSpace.Number = roomFromLinkedFile.Number;
+                string name = roomFromLinkedFile.LookupParameter("Name").AsValueString();
+                string number = roomFromLinkedFile.LookupParameter("Number").AsValueString();
+
+                createdSpace.Name = name;
+                createdSpace.Number = number;
 
                 Level upperLevelLimitInLinked = roomFromLinkedFile.UpperLimit;
                 double limitOffsetInLinked = roomFromLinkedFile.LimitOffset;

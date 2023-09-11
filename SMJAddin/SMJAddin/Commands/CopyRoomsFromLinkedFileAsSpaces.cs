@@ -49,7 +49,7 @@ namespace SMJAddin
                                 SpaceMethods.CreateOrUpdateSpaceFromRoomInLinkedFile(doc, roomInLinkedModel);
                             }
                         }
-
+                        
                         tx.Commit();
                     }
                 }

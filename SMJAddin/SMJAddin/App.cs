@@ -22,23 +22,23 @@ namespace SMJAddin
             application.CreateRibbonTab(tabName);
 
             // Add a new ribbon panel
-            RibbonPanel panelAddin = application.CreateRibbonPanel(tabName, "SMJAddin Tab");
+            RibbonPanel panelAddin = application.CreateRibbonPanel(tabName, "Space");
 
             //C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\
 
-            new ButtonBuilder("CreateOrUpdateRoomFromLinkedFile", typeof(CopyRoomsFromLinkedFile))
+            new ButtonBuilder("CreateOrUpdateSpaceFromLinkedFile", typeof(CopyRoomsFromLinkedFileAsSpaces))
                 .ImagePath($"{Global.ApplicationPath}\\Pictures\\IconRoomImport.png")
-                .Text("Create or update\nrooms from Linked file")
+                .Text("Create or Update\n Rooms from Linked file\nas Spaces")
                 .Build(panelAddin);
 
-            new ButtonBuilder("MoveRoomLocationToRoomCenteroid", typeof(MoveRoomLocationToCenter))
+            new ButtonBuilder("MoveSpaceLocationToCenteroid", typeof(MoveSpaceLocationToCenter))
                 .ImagePath($"{Global.ApplicationPath}\\Pictures\\CenterRooms.png")
-                .Text("Move Room Location\nTo Centeroid")
+                .Text("Move Space Location\nTo Centeroid")
                 .Build(panelAddin);
 
-            new ButtonBuilder("MoveTagsToRoomLocation", typeof(MoveTagsToRoomLocation))
+            new ButtonBuilder("MoveTagsToSpaceLocation", typeof(MoveTagsToSpaceLocation))
                 .ImagePath($"{Global.ApplicationPath}\\Pictures\\MoveTagsToRoom.png")
-                .Text("Move Tags to\nRoom Location")
+                .Text("Move Tags to\nSpace Location")
                 .Build(panelAddin);
 
             return Result.Succeeded;

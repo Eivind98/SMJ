@@ -10,13 +10,14 @@ using System.Diagnostics;
 using System.Linq;
 using Autodesk.Revit.DB.Architecture;
 using System.Reflection.Emit;
+using Autodesk.Revit.DB.Mechanical;
 
 #endregion
 
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class MoveRoomLocationToCenter : IExternalCommand
+    public class MoveSpaceLocationToCenter : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -32,15 +33,15 @@ namespace SMJAddin
             {
                 tx.Start("Moving Rooms");
 
-                var rooms = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rooms);
+                var spaces = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_MEPSpaces);
                 
                 View3D view = ViewMethods.CreateViewForRay(doc);
 
-                foreach (Room room in rooms)
+                foreach (Space room in spaces)
                 {
                     if (room == null || room.Area == 0) continue;
 
-                    RoomMethods.TryMoveRoomLocationToCenter(room, view);
+                    SpaceMethods.TryMoveSpaceLocationToCenter(room, view);
                 }
 
                 tx.Commit();
