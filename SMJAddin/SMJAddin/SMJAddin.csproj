@@ -72,7 +72,10 @@
     <Compile Include="Commands\MoveTagsToSpaceLocation.cs" />
     <Compile Include="Commands\MoveTagsToRoomLocation.cs" />
     <Compile Include="Commands\MoveRoomLocationToCenter.cs" />
-    <Compile Include="Commands\SpaceTagsEvenly.cs" />
+    <Compile Include="Commands\AlignTagsLeft.cs" />
+    <Compile Include="Commands\SpaceTagsEvenlyYthenX.cs" />
+    <Compile Include="Commands\SpaceTagsEvenlyXthenY.cs" />
+    <Compile Include="Commands\SpaceTagsEvenlySumOfXAndY.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="LevelMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -84,22 +87,29 @@
     <Compile Include="Commands\Tester.cs" />
     <Compile Include="Commands\CopyRoomsFromLinkedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IndepententTagMethods.cs" />
     <Compile Include="SpatialTagMethods.cs" />
     <Compile Include="SpaceMethods.cs" />
     <Compile Include="RoomMethods.cs" />
     <Compile Include="ViewMethods.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Pictures\AlignLeft.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Pictures\CenterRooms.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Pictures\IconRoomImport.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pictures\MoveTagsToRoom.png">
+    <Content Include="Pictures\MoveTagsToSpaces.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Pictures\smj.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pictures\SpaceEvenly.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SMJAddin.addin" />

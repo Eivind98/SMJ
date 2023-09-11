@@ -22,24 +22,36 @@ namespace SMJAddin
             application.CreateRibbonTab(tabName);
 
             // Add a new ribbon panel
-            RibbonPanel panelAddin = application.CreateRibbonPanel(tabName, "Space");
-
-            //C:\\Program Files\\Vormadal Brothers\\SMJAddin\\Pictures\\
+            RibbonPanel panelSpaces = application.CreateRibbonPanel(tabName, "Spaces");
 
             new ButtonBuilder("CreateOrUpdateSpaceFromLinkedFile", typeof(CopyRoomsFromLinkedFileAsSpaces))
-                .ImagePath($"{Global.ApplicationPath}\\Pictures\\IconRoomImport.png")
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\IconRoomImport.png")
                 .Text("Create or Update\n Rooms from Linked file\nas Spaces")
-                .Build(panelAddin);
+                .Build(panelSpaces);
 
             new ButtonBuilder("MoveSpaceLocationToCenteroid", typeof(MoveSpaceLocationToCenter))
-                .ImagePath($"{Global.ApplicationPath}\\Pictures\\CenterRooms.png")
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\CenterRooms.png")
                 .Text("Move Space Location\nTo Centeroid")
-                .Build(panelAddin);
+                .Build(panelSpaces);
 
             new ButtonBuilder("MoveTagsToSpaceLocation", typeof(MoveTagsToSpaceLocation))
-                .ImagePath($"{Global.ApplicationPath}\\Pictures\\MoveTagsToRoom.png")
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\MoveTagsToSpaces.png")
                 .Text("Move Tags to\nSpace Location")
-                .Build(panelAddin);
+                .Build(panelSpaces);
+
+            RibbonPanel panelTags = application.CreateRibbonPanel(tabName, "Tags");
+
+            new ButtonBuilder("SpaceTagsEvenly", typeof(SpaceTagsEvenlySumOfXAndY))
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\SpaceEvenly.png")
+                .Text("Space Tags\nEvenly")
+                .Build(panelTags);
+
+            new ButtonBuilder("AlignTagsLeft", typeof(AlignTagsLeft))
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignLeft.png")
+                .Text("Align Tags\nLeft")
+                .Build(panelTags);
+            
+
 
             return Result.Succeeded;
         }

@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class Tester : IExternalCommand
+    public class SpaceTagsEvenlySumOfXAndY : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -33,17 +33,45 @@ namespace SMJAddin
 
             if (eleIds.Count != 0)
             {
-                List<string> tags = new List<string>();
+                List<IndependentTag> tags = new List<IndependentTag>();
 
                 foreach (var eleid in eleIds)
                 {
                     Element ele = doc.GetElement(eleid);
-                    var test = ele.GetType();
-                    tags.Add(test.Name.ToString());
+                    if (ele != null && ele is IndependentTag)
+                    {
+                        tags.Add(ele as IndependentTag);
+                    }
                 }
-                TaskDialog task = new TaskDialog("Tester");
-                task.MainContent = string.Join(Environment.NewLine, tags);
-                task.Show();
+
+                if (tags.Count > 1)
+                {
+                    using (var tx = new Transaction(doc))
+                    {
+                        tx.Start("Aligning tags to the Left");
+
+                        IndepententTagMethods.SpaceTagsEvenly(tags, XOrY.SumOfXandY);
+
+                        ICollection<ElementId> newSelection = new HashSet<ElementId>();
+
+                        foreach (var tag in tags)
+                        {
+                            newSelection.Add(tag.Id);
+                        }
+
+                        sel.SetElementIds(newSelection);
+
+
+                        tx.Commit();
+                    }
+
+                }
+                else
+                {
+                    TaskDialog dia = new TaskDialog("No Selection");
+                    dia.MainContent = "There is one or no Tags selected. Please select Multiple Tags";
+                    dia.Show();
+                }
 
             }
             else

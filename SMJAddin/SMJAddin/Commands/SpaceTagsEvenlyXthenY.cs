@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class Tester : IExternalCommand
+    public class SpaceTagsEvenlyXthenY : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -33,17 +33,36 @@ namespace SMJAddin
 
             if (eleIds.Count != 0)
             {
-                List<string> tags = new List<string>();
 
-                foreach (var eleid in eleIds)
+                List< SpatialElementTag > tags = new List<SpatialElementTag>();
+
+                foreach ( var eleid in eleIds )
                 {
                     Element ele = doc.GetElement(eleid);
-                    var test = ele.GetType();
-                    tags.Add(test.Name.ToString());
+                    if ( ele != null && ele is SpatialElementTag)
+                    {
+                        tags.Add(ele as SpatialElementTag);
+                    }
                 }
-                TaskDialog task = new TaskDialog("Tester");
-                task.MainContent = string.Join(Environment.NewLine, tags);
-                task.Show();
+
+                if ( tags.Count > 1 )
+                {
+                    using (var tx = new Transaction(doc))
+                    {
+                        tx.Start("Spacing Tags Evenly");
+
+                        SpatialTagMethods.SpaceTagsEvenly(tags, XOrY.XThenY);
+
+                        tx.Commit();
+                    }
+
+                }
+                else
+                {
+                    TaskDialog dia = new TaskDialog("No Selection");
+                    dia.MainContent = "There is one or no Tags selected. Please select Multiple Tags";
+                    dia.Show();
+                }
 
             }
             else
@@ -52,6 +71,8 @@ namespace SMJAddin
                 dia.MainContent = "Nothing is selected. Please select Multiple Tags";
                 dia.Show();
             }
+
+            
 
 
             return Result.Succeeded;

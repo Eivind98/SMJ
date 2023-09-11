@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class SpaceTagsEvenly : IExternalCommand
+    public class SpaceTagsEvenlyYthenX : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -51,16 +51,7 @@ namespace SMJAddin
                     {
                         tx.Start("Spacing Tags Evenly");
 
-                        SpatialTagMethods.SpaceTagsEvenly(tags);
-
-                        tx.Commit();
-                    }
-
-                    using (var tx = new Transaction(doc))
-                    {
-                        tx.Start("Spacing Tags maybe");
-
-                        doc.Regenerate();
+                        SpatialTagMethods.SpaceTagsEvenly(tags, XOrY.YThenX);
 
                         tx.Commit();
                     }
