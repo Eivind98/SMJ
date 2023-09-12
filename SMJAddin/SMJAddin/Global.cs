@@ -26,6 +26,13 @@ namespace SMJAddin
         public static string Modifiable = "";
 
 
-
+        public static T MostCommon<T>(this IEnumerable<T> list)
+        {
+            var most = (from i in list
+                        group i by i into grp
+                        orderby grp.Count() descending
+                        select grp.Key).First();
+            return most;
+        }
     }
 }

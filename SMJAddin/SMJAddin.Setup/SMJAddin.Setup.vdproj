@@ -87,6 +87,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0C384AD38FC7063E5AB0B277812A1E2E"
+        "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_150E63B38CCEDE088575C3729CF2F2CC"
         "OwnerKey" = "8:_AB1078A1E0C04A2D5C62931B35D0BFF9"
         "MsmSig" = "8:_UNDEFINED"
@@ -196,6 +202,12 @@
         "Entry"
         {
         "MsmKey" = "8:_2216A570DBC8BBA3E3FEF91B6521EADC"
+        "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3115D79E0224474A35F7F65085B6FD7A"
         "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2014,13 +2026,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_16EE8E38932402673A3E23DFD7FB3773"
+        "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
+        "OwnerKey" = "8:_3115D79E0224474A35F7F65085B6FD7A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0C384AD38FC7063E5AB0B277812A1E2E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2371,6 +2389,12 @@
         "OwnerKey" = "8:_894BB3FCD85465726632482B84160656"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_16EE8E38932402673A3E23DFD7FB3773"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -2621,6 +2645,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0C384AD38FC7063E5AB0B277812A1E2E"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_0C384AD38FC7063E5AB0B277812A1E2E"
+                    {
+                    "Name" = "8:Lucene.Net.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lucene.Net.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_150E63B38CCEDE088575C3729CF2F2CC"
             {
             "AssemblyRegister" = "3:1"
@@ -2852,6 +2907,37 @@
                     }
                 }
             "SourcePath" = "8:InterfaceUtilAPI.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3115D79E0224474A35F7F65085B6FD7A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3115D79E0224474A35F7F65085B6FD7A"
+                    {
+                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ICSharpCode.SharpZipLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
@@ -4384,7 +4470,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SMJAddin"
         "ProductCode" = "8:{6206095D-7851-4A3C-BB27-61019FC2ECE5}"
-        "PackageCode" = "8:{B77C3A4E-2D38-43F9-B9BE-21DA73CB6E7A}"
+        "PackageCode" = "8:{ABA8D896-2105-40D8-B838-898472CA0730}"
         "UpgradeCode" = "8:{496E59E3-48F5-4F60-9FFD-3E0AC74FF842}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -4504,20 +4590,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_9ED3BA785C2A4C40A579272C069961FD"
-            {
-            "Name" = "8:Shortcut to Primary output from SMJAddin (Active)"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
-            "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
-            "WorkingFolder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
         }
         "UserInterface"
         {
@@ -4919,7 +4991,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9E22B0E4F5EF426FA9759FBA7F33CE53"
             {
-            "SourcePath" = "8:..\\SMJAddin\\obj\\Release\\SMJAddin.dll"
+            "SourcePath" = "8:..\\SMJAddin\\obj\\Debug\\SMJAddin.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
@@ -4945,7 +5017,7 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_BE87CC785A9A4DB9B962ED0781B27785"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CB6C61DC39684165B613C4DDFC899A2F"
             {
             "SourcePath" = "8:"
             "TargetName" = "8:"

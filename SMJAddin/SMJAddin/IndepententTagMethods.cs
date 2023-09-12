@@ -6,13 +6,153 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.UI;
-using System.Diagnostics;
 
 namespace SMJAddin
 {
-    
+
     public static class IndepententTagMethods
     {
+        public static void TagFamily(FamilyInstance instance)
+        {
+            XYZ direction = instance.FacingOrientation.Normalize();
+            double length = 1;
+            Document doc = instance.Document;
+            XYZ familyLocationPoint = (instance.Location as LocationPoint).Point;
+            View view = doc.ActiveView;
+            ElementId symbolId = GetMostCommonTagFromFamilyInstance(instance);
+            TagOrientation orientation = TagOrientation.Vertical;
+
+            if (Math.Round(direction.X, 2) != 0)
+            {
+                orientation = TagOrientation.Horizontal;
+            }
+
+            IndependentTag theTag = IndependentTag.Create(doc, symbolId, view.Id, new Reference(instance), false, orientation, familyLocationPoint);
+
+            BoundingBoxXYZ tagBoundingBox = theTag.get_BoundingBox(view);
+
+            switch (orientation)
+            {
+                case TagOrientation.Horizontal:
+                    double lengthX = tagBoundingBox.Max.X - tagBoundingBox.Min.X;
+                    length += lengthX/2;
+                    break;
+                case TagOrientation.Vertical:
+                    double lengthY = tagBoundingBox.Max.Y - tagBoundingBox.Min.Y;
+                    length += lengthY/2;
+                    break;
+            }
+
+
+            XYZ endPoint = familyLocationPoint.Add(direction.Multiply(length));
+
+            PlaceMidpointOfTag(theTag, endPoint);
+
+        }
+
+        public static void PlaceMidpointOfTag(IndependentTag tag, XYZ fromPoint)
+        {
+            BoundingBoxXYZ box = tag.get_BoundingBox(tag.Document.ActiveView);
+            XYZ newHeadPoint = null;
+            double maxPointX = box.Max.X;
+            double maxPointY = box.Max.Y;
+            double minPointX = box.Min.X;
+            double minPointY = box.Min.Y;
+
+            if (tag.TagOrientation == TagOrientation.Horizontal)
+            {
+                newHeadPoint = new XYZ(fromPoint.X, fromPoint.Y + (maxPointY - minPointY) / 2, box.Max.Z);
+            }
+            else if (tag.TagOrientation == TagOrientation.Vertical)
+            {
+                newHeadPoint = new XYZ(fromPoint.X - (maxPointX - minPointX)/2, fromPoint.Y, box.Max.Z);
+            }
+
+            MoveTagHeadToPoint(tag, newHeadPoint);
+        }
+
+
+        public static XYZ PointfromFeetToMM(XYZ point)
+        {
+            double conversionactor = 304.8;
+            return new XYZ(point.X * conversionactor, point.Y * conversionactor, point.Z * conversionactor);
+        }
+
+
+        public static ElementId GetMostCommonTagFromFamilyInstance(FamilyInstance instance)
+        {
+            Document doc = instance.Document;
+            List<IndependentTag> independentTags = GetMostReleventTagsFromFamilyInstance(instance);
+
+            IndependentTag mostCommon = independentTags.MostCommon();
+
+            ElementId eleid = mostCommon.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM).AsElementId();
+            FamilySymbol element = doc.GetElement(eleid) as FamilySymbol;
+
+            return element.Id;
+        }
+
+        public static List<IndependentTag> GetMostReleventTagsFromFamilyInstance(FamilyInstance instance)
+        {
+
+            Document doc = instance.Document;
+            string instanceCat = instance.Category.BuiltInCategory.ToString();
+            if (instanceCat.EndsWith("s"))
+            {
+                instanceCat = instanceCat.Remove(instanceCat.Length - 1);
+            }
+
+            BuiltInCategory tagCategory = (BuiltInCategory)Enum.Parse(typeof(BuiltInCategory), instanceCat + "Tags");
+            var allDemTags = new FilteredElementCollector(doc, doc.ActiveView.Id).OfCategory(tagCategory);
+
+            if (allDemTags.Count() == 0)
+            {
+                allDemTags = new FilteredElementCollector(doc).OfCategory(tagCategory);
+            }
+
+            List<IndependentTag> independentTags = new List<IndependentTag>();
+            ICollection<Element> familyInstances = GeneralMethods.GetSimilarInstances(instance);
+            List<ElementId> familyInstancesId = new List<ElementId>();
+
+            foreach (Element familyInstance in familyInstances)
+            {
+                familyInstancesId.Add(familyInstance.Id);
+            }
+
+            foreach (var t in allDemTags)
+            {
+                if (t is IndependentTag tag)
+                {
+                    if (familyInstancesId.Contains(tag.GetTaggedElementIds().First().HostElementId))
+                    {
+                        independentTags.Add(tag);
+                    }
+
+                }
+            }
+
+            if (independentTags.Count() == 0)
+            {
+                allDemTags = new FilteredElementCollector(doc).OfCategory(tagCategory);
+                foreach (var t in allDemTags)
+                {
+                    if (t is IndependentTag tag)
+                    {
+                        independentTags.Add(tag);
+                    }
+                }
+            }
+
+            if (independentTags.Count() == 0)
+            {
+                return null;
+            }
+
+            return independentTags;
+        }
+
+
+
         public static void AlignTagsLeft(List<IndependentTag> tags)
         {
             if (tags.Count == 0)
@@ -25,10 +165,6 @@ namespace SMJAddin
 
             foreach (IndependentTag tag in tags)
             {
-                if (!tag.HasLeader)
-                {
-                    tag.HasLeader = true;
-                }
 
                 MoveTagHeadToPoint(tag, new XYZ(leftX, tag.TagHeadPosition.Y, tag.TagHeadPosition.Z));
             }

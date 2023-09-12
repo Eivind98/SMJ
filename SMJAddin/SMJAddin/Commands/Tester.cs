@@ -35,15 +35,38 @@ namespace SMJAddin
             {
                 List<string> tags = new List<string>();
 
+                List<FamilyInstance> familyInstances = new List<FamilyInstance>();
+
+
+
+
                 foreach (var eleid in eleIds)
                 {
                     Element ele = doc.GetElement(eleid);
-                    var test = ele.GetType();
-                    tags.Add(test.Name.ToString());
+
+                    if (ele is FamilyInstance)
+                    {
+                        familyInstances.Add(ele as FamilyInstance);
+                    }
+
                 }
-                TaskDialog task = new TaskDialog("Tester");
-                task.MainContent = string.Join(Environment.NewLine, tags);
-                task.Show();
+
+                using (var tx = new Transaction(doc))
+                {
+                    tx.Start("Aligning tags to the Left");
+
+                    foreach (var instance in familyInstances)
+                    {
+                        IndepententTagMethods.TagFamily(instance);
+                    }
+
+                    tx.Commit();
+                }
+                //21591114
+
+                //TaskDialog task = new TaskDialog("Tester");
+                //task.MainContent = string.Join(Environment.NewLine, tags);
+                //task.Show();
 
             }
             else

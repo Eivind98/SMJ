@@ -77,6 +77,7 @@
     <Compile Include="Commands\SpaceTagsEvenlyXthenY.cs" />
     <Compile Include="Commands\SpaceTagsEvenlySumOfXAndY.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="GeneralMethods.cs" />
     <Compile Include="LevelMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
