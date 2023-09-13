@@ -30,6 +30,71 @@ namespace SMJAddin
             return collector.WherePasses(filter).ToElements();
         }
 
+        public static BoundingBoxXYZ GetBoundingBox(List<Element> elements)
+        {
+            View view = elements[0].Document.ActiveView;
+            List<XYZ> maxPoints = new List<XYZ>();
+            List<XYZ> minPoints = new List<XYZ>();
+
+            double maxX = double.MinValue;
+            double maxY = double.MinValue;
+            double minX = double.MaxValue;
+            double minY = double.MaxValue;
+
+            foreach (Element element in elements)
+            {
+                BoundingBoxXYZ bound = element.get_BoundingBox(view);
+                maxPoints.Add(bound.Max);
+                minPoints.Add(bound.Min);
+            }
+
+            for (int i = 0; i < maxPoints.Count; i++)
+            {
+                XYZ maxPoint = maxPoints[i];
+                XYZ minPoint = minPoints[i];
+
+                double maxPointX = maxPoint.X;
+                double maxPointY = maxPoint.Y;
+                double minPointX = minPoint.X;
+                double minPointY = minPoint.Y;
+
+                if (maxX < maxPointX)
+                {
+                    maxX = maxPointX;
+                }
+                if (maxY < maxPointY)
+                {
+                    maxY = maxPointY;
+                }
+                if (minX > minPointX)
+                {
+                    minX = minPointX;
+                }
+                if (minY > minPointY)
+                {
+                    minY = minPointY;
+                }
+            }
+
+
+            XYZ max = new XYZ(maxX, maxY, 0);
+            XYZ min = new XYZ(minX, minY, 0);
+
+            BoundingBoxXYZ bounding = new BoundingBoxXYZ();
+            bounding.Min = min;
+            bounding.Max = max;
+
+            return bounding;
+        }
+
+        //public static BoundingBoxXYZ GetMaxXYZ(List<Element> elements)
+        //{
+
+
+
+        //}
+
+
 
     }
 }

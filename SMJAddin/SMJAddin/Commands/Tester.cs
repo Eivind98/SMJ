@@ -37,29 +37,15 @@ namespace SMJAddin
 
                 List<FamilyInstance> familyInstances = new List<FamilyInstance>();
 
-
-
-
-                foreach (var eleid in eleIds)
-                {
-                    Element ele = doc.GetElement(eleid);
-
-                    if (ele is FamilyInstance)
-                    {
-                        familyInstances.Add(ele as FamilyInstance);
-                    }
-
-                }
+                var element = doc.GetElement(eleIds.FirstOrDefault());
+                string name = element.Name;
 
                 using (var tx = new Transaction(doc))
                 {
                     tx.Start("Aligning tags to the Left");
 
-                    foreach (var instance in familyInstances)
-                    {
-                        IndepententTagMethods.TagFamily(instance);
-                    }
-
+                    
+                    ViewMethods.CreateSheetAndFilters(element);
                     tx.Commit();
                 }
                 //21591114
