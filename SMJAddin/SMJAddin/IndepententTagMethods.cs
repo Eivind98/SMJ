@@ -43,41 +43,42 @@ namespace SMJAddin
                     break;
             }
 
-
             XYZ endPoint = familyLocationPoint.Add(direction.Multiply(length));
 
-            PlaceMidpointOfTag(theTag, endPoint);
-
+            PlaceTagByMidpoint(theTag, endPoint);
         }
 
-        public static void PlaceMidpointOfTag(IndependentTag tag, XYZ fromPoint)
+        public static void PlaceTagByMidpoint(IndependentTag tag, XYZ newMidpoint)
         {
             BoundingBoxXYZ box = tag.get_BoundingBox(tag.Document.ActiveView);
-            XYZ newHeadPoint = null;
-            double maxPointX = box.Max.X;
-            double maxPointY = box.Max.Y;
-            double minPointX = box.Min.X;
-            double minPointY = box.Min.Y;
+            TagOrientation orientation = tag.TagOrientation;
+            double newX = newMidpoint.X;
+            double newY = newMidpoint.Y;
+            double newZ = box.Max.Z;
 
-            if (tag.TagOrientation == TagOrientation.Horizontal)
+            if (orientation == TagOrientation.Horizontal)
             {
-                newHeadPoint = new XYZ(fromPoint.X, fromPoint.Y + (maxPointY - minPointY) / 2, box.Max.Z);
+                double maxPointY = box.Max.Y;
+                double minPointY = box.Min.Y;
+                newY += (maxPointY - minPointY) / 2;
             }
-            else if (tag.TagOrientation == TagOrientation.Vertical)
+            else if (orientation == TagOrientation.Vertical)
             {
-                newHeadPoint = new XYZ(fromPoint.X - (maxPointX - minPointX)/2, fromPoint.Y, box.Max.Z);
+                double maxPointX = box.Max.X;
+                double minPointX = box.Min.X;
+                newX -= (maxPointX - minPointX) / 2;
             }
+
+            XYZ newHeadPoint = new XYZ(newX, newY, newZ);
 
             MoveTagHeadToPoint(tag, newHeadPoint);
         }
 
-
-        public static XYZ PointfromFeetToMM(XYZ point)
+        public static XYZ PointFromFeetToMM(XYZ point)
         {
             double conversionactor = 304.8;
             return new XYZ(point.X * conversionactor, point.Y * conversionactor, point.Z * conversionactor);
         }
-
 
         public static ElementId GetMostCommonTagFromFamilyInstance(FamilyInstance instance)
         {
