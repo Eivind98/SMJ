@@ -76,6 +76,8 @@
     <Compile Include="Commands\SpaceTagsEvenlyYthenX.cs" />
     <Compile Include="Commands\SpaceTagsEvenlyXthenY.cs" />
     <Compile Include="Commands\SpaceTagsEvenlySumOfXAndY.cs" />
+    <Compile Include="Commands\StuffTesterAlso.cs" />
+    <Compile Include="Commands\StuffTester.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="GeneralMethods.cs" />
     <Compile Include="LevelMethods.cs" />

@@ -31,35 +31,13 @@ namespace SMJAddin
             var sel = uidoc.Selection;
             var eleIds = sel.GetElementIds();
 
-            if (eleIds.Count != 0)
+            using (var tx = new Transaction(doc))
             {
-                List<string> tags = new List<string>();
+                tx.Start("Aligning tags to the Left");
 
-                List<FamilyInstance> familyInstances = new List<FamilyInstance>();
+                ViewMethods.CreateSheetAndFilters(doc.GetElement(eleIds.First()));
 
-                var element = doc.GetElement(eleIds.FirstOrDefault());
-                string name = element.Name;
-
-                using (var tx = new Transaction(doc))
-                {
-                    tx.Start("Aligning tags to the Left");
-
-                    
-                    ViewMethods.CreateSheetAndFilters(element);
-                    tx.Commit();
-                }
-                //21591114
-
-                //TaskDialog task = new TaskDialog("Tester");
-                //task.MainContent = string.Join(Environment.NewLine, tags);
-                //task.Show();
-
-            }
-            else
-            {
-                TaskDialog dia = new TaskDialog("No Selection");
-                dia.MainContent = "Nothing is selected. Please select Multiple Tags";
-                dia.Show();
+                tx.Commit();
             }
 
 
