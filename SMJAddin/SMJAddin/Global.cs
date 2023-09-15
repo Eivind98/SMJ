@@ -24,7 +24,9 @@ namespace SMJAddin
 
         public static string ApplicationPath = "C:\\Program Files\\Vormadal Brothers\\SMJAddin";
         public static string Modifiable = "";
-
+        public static Guid GUIDTriggerSheetName = new Guid("fafbf6b2-4c06-42d4-97c1-d1b4eb593eff");
+        public static Guid GUIDTriggerSheetNumber = new Guid("dea3bf3d-74eb-42a1-a757-1539271fc0d0");
+        public static Guid GUIDTriggerTitleBlockChanged = new Guid("124d2dea-8ec6-40f5-9bcb-f84d23ee3309");
 
         public static T MostCommon<T>(this IEnumerable<T> list)
         {

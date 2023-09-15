@@ -17,24 +17,23 @@ using Autodesk.Revit.DB.Events;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class StuffTesterAlso : IExternalCommand
+    public class TriggerSheetName : IExternalCommand
     {
 
         /// <summary>
         /// Updater notifying user if an 
         /// elevation view was added.
         /// </summary>
-        public class ElevationWatcherUpdater : IUpdater
+        public class SheetWatcherUpdater : IUpdater
         {
             static AddInId _appId;
             static UpdaterId _updaterId;
 
-            public ElevationWatcherUpdater(AddInId id)
+            public SheetWatcherUpdater(AddInId id)
             {
                 _appId = id;
 
-                _updaterId = new UpdaterId(_appId, new Guid(
-                  "fafbf6b2-4c06-42d4-97c1-d1b4eb593eff"));
+                _updaterId = new UpdaterId(_appId, Global.GUIDTriggerSheetName);
             }
             bool test = true;
             public void Execute(UpdaterData data)
@@ -82,7 +81,7 @@ namespace SMJAddin
 
             public string GetUpdaterName()
             {
-                return "ElevationWatcherUpdater";
+                return "SheetWatcherUpdater";
             }
         }
 
@@ -91,21 +90,13 @@ namespace SMJAddin
             UIApplication uiapp = commandData.Application;
             Application app = uiapp.Application;
 
-            // Register updater to react to view creation
-
-            ElevationWatcherUpdater updater
-              = new ElevationWatcherUpdater(
-                app.ActiveAddInId);
+            SheetWatcherUpdater updater = new SheetWatcherUpdater(app.ActiveAddInId);
 
             UpdaterRegistry.RegisterUpdater(updater);
 
-            ElementCategoryFilter f
-              = new ElementCategoryFilter(
-                BuiltInCategory.OST_Sheets);
+            ElementCategoryFilter categoryFilter = new ElementCategoryFilter(BuiltInCategory.OST_Sheets);
 
-            UpdaterRegistry.AddTrigger(
-              updater.GetUpdaterId(), f,
-              Element.GetChangeTypeParameter(new ElementId((int)BuiltInParameter.SHEET_NAME)));
+            UpdaterRegistry.AddTrigger(updater.GetUpdaterId(), categoryFilter,Element.GetChangeTypeParameter(new ElementId((int)BuiltInParameter.SHEET_NAME)));
             return Result.Succeeded;
         }
     }

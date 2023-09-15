@@ -50,7 +50,14 @@ namespace SMJAddin
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignLeft.png")
                 .Text("Align Tags\nLeft")
                 .Build(panelTags);
-            
+
+            RibbonPanel Testing = application.CreateRibbonPanel(tabName, "Testing");
+
+            new ButtonBuilder("CreatingDrawings", typeof(Tester))
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\Tester.png")
+                .Text("Testing\nCreate Drawings")
+                .Build(Testing);
+
 
 
             return Result.Succeeded;

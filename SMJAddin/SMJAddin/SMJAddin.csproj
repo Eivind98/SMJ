@@ -76,7 +76,9 @@
     <Compile Include="Commands\SpaceTagsEvenlyYthenX.cs" />
     <Compile Include="Commands\SpaceTagsEvenlyXthenY.cs" />
     <Compile Include="Commands\SpaceTagsEvenlySumOfXAndY.cs" />
-    <Compile Include="Commands\StuffTesterAlso.cs" />
+    <Compile Include="Triggers\TriggerTitleBlockChanged.cs" />
+    <Compile Include="Triggers\TriggerSheetNumber.cs" />
+    <Compile Include="Triggers\TriggerSheetName.cs" />
     <Compile Include="Commands\StuffTester.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="GeneralMethods.cs" />
@@ -113,6 +115,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Pictures\SpaceEvenly.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pictures\Tester.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SMJAddin.addin" />
