@@ -50,6 +50,9 @@
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
+    <Reference Include="MoreLinq, Version=3.4.2.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\morelinq.3.4.2\lib\net462\MoreLinq.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RevitAPI">
       <HintPath Condition="Exists('..\..\RevitAssemblies\RevitAPI.dll')">..\..\RevitAssemblies\RevitAPI.dll</HintPath>
@@ -62,20 +65,27 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2023\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="ButtonBuilder.cs" />
+    <Compile Include="Commands\AlignTagsRight.cs" />
+    <Compile Include="Commands\AlignTagsLeft.cs" />
     <Compile Include="Commands\CopyRoomsFromLinkedFileAsSpaces.cs" />
     <Compile Include="Commands\MoveSpaceLocationToCenter.cs" />
     <Compile Include="Commands\MoveTagsToSpaceLocation.cs" />
     <Compile Include="Commands\MoveTagsToRoomLocation.cs" />
     <Compile Include="Commands\MoveRoomLocationToCenter.cs" />
-    <Compile Include="Commands\AlignTagsLeft.cs" />
-    <Compile Include="Commands\SpaceTagsEvenlyYthenX.cs" />
-    <Compile Include="Commands\SpaceTagsEvenlyXthenY.cs" />
-    <Compile Include="Commands\SpaceTagsEvenlySumOfXAndY.cs" />
+    <Compile Include="Commands\AlignTagsCenter.cs" />
+    <Compile Include="Commands\SpaceTagsFixedDistance.cs" />
+    <Compile Include="Commands\SpaceTagsEvenly.cs" />
     <Compile Include="Triggers\TriggerTitleBlockChanged.cs" />
     <Compile Include="Triggers\TriggerSheetNumber.cs" />
     <Compile Include="Triggers\TriggerSheetName.cs" />
@@ -130,6 +140,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pictures\RevitIcons\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- <PropertyGroup> -->

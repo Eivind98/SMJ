@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class AlignTagsLeft : IExternalCommand
+    public class AlignTagsCenter : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -48,15 +48,18 @@ namespace SMJAddin
                 }
                 else
                 {
-                    using (var tx = new TransactionGroup(doc))
+
+
+
+                    using (var trGr = new TransactionGroup(doc))
                     {
-                        tx.Start("Aligning tags to the Left");
-                        IndepententTagMethods.AlignTagsLeft(tags);
+                        trGr.Start("Aligning tags to Center");
+                        IndepententTagMethods.AlignTagsCenter(tags);
 
                         ICollection<ElementId> newSelection = new HashSet<ElementId>(tags.Select(tag => tag.Id));
                         sel.SetElementIds(newSelection);
 
-                        tx.Assimilate();
+                        trGr.Assimilate();
                     }
                 }
             }

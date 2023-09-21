@@ -8,6 +8,21 @@ using System.Threading.Tasks;
 
 namespace SMJAddin
 {
+
+    public enum XOrY
+    {
+        XThenY = 0,
+        YThenX = 1,
+        SumOfXandY = 2,
+    }
+
+    public enum Alignment
+    {
+        Left = 0,
+        Right = 1,
+        Center = 2,
+    }
+
     public static class Global
     {
         public static string AssemblyDirectory

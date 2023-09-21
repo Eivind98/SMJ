@@ -10,12 +10,7 @@ using System.Diagnostics;
 
 namespace SMJAddin
 {
-    public enum XOrY
-    {
-        XThenY = 0,
-        YThenX = 1,
-        SumOfXandY = 2,
-    }
+    
 
     public static class SpatialTagMethods
     {

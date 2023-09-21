@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class SpaceTagsEvenlyXthenY : IExternalCommand
+    public class SpaceTagsEvenly : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -33,27 +33,36 @@ namespace SMJAddin
 
             if (eleIds.Count != 0)
             {
+                List<IndependentTag> tags = new List<IndependentTag>();
 
-                List< SpatialElementTag > tags = new List<SpatialElementTag>();
-
-                foreach ( var eleid in eleIds )
+                foreach (var eleid in eleIds)
                 {
                     Element ele = doc.GetElement(eleid);
-                    if ( ele != null && ele is SpatialElementTag)
+                    if (ele != null && ele is IndependentTag)
                     {
-                        tags.Add(ele as SpatialElementTag);
+                        tags.Add(ele as IndependentTag);
                     }
                 }
 
-                if ( tags.Count > 1 )
+                if (tags.Count > 1)
                 {
-                    using (var tx = new Transaction(doc))
+                    using (var trGr = new TransactionGroup(doc))
                     {
-                        tx.Start("Spacing Tags Evenly");
+                        trGr.Start("Space Tags Evenly");
 
-                        SpatialTagMethods.SpaceTagsEvenly(tags, XOrY.XThenY);
+                        IndepententTagMethods.SpaceTagsEvenly(tags, XOrY.SumOfXandY);
 
-                        tx.Commit();
+                        ICollection<ElementId> newSelection = new HashSet<ElementId>();
+
+                        foreach (var tag in tags)
+                        {
+                            newSelection.Add(tag.Id);
+                        }
+
+                        sel.SetElementIds(newSelection);
+
+
+                        trGr.Assimilate();
                     }
 
                 }
@@ -71,8 +80,6 @@ namespace SMJAddin
                 dia.MainContent = "Nothing is selected. Please select Multiple Tags";
                 dia.Show();
             }
-
-            
 
 
             return Result.Succeeded;

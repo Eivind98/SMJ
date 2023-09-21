@@ -41,12 +41,12 @@ namespace SMJAddin
 
             RibbonPanel panelTags = application.CreateRibbonPanel(tabName, "Tags");
 
-            new ButtonBuilder("SpaceTagsEvenly", typeof(SpaceTagsEvenlySumOfXAndY))
+            new ButtonBuilder("SpaceTagsEvenly", typeof(SpaceTagsEvenly))
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\SpaceEvenly.png")
                 .Text("Space Tags\nEvenly")
                 .Build(panelTags);
 
-            new ButtonBuilder("AlignTagsLeft", typeof(AlignTagsLeft))
+            new ButtonBuilder("AlignTagsLeft", typeof(AlignTagsCenter))
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignLeft.png")
                 .Text("Align Tags\nLeft")
                 .Build(panelTags);

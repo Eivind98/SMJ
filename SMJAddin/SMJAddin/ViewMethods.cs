@@ -16,7 +16,7 @@ namespace SMJAddin
         {
             if (element is Pipe)
             {
-                
+
 
 
                 Document doc = element.Document;
@@ -118,7 +118,7 @@ namespace SMJAddin
 
                 newView.SetFilterOverrides(filterId, graphicSettings);
 
-                CreateSheetForView(newView, new string[] { "HSKV" , paramText});
+                CreateSheetForView(newView, new string[] { "HSKV", paramText });
 
             }
         }
@@ -132,7 +132,7 @@ namespace SMJAddin
             sheet = ViewSheet.Create(doc, titleBlock.Id);
             sheet.SheetNumber = numberAndName[0];
             sheet.Name = numberAndName[1];
-            
+
             BoundingBoxXYZ bound = titleBlock.get_BoundingBox(sheet);
 
             double lengthX = (bound.Max.X - bound.Min.X) / 2;
@@ -192,7 +192,7 @@ namespace SMJAddin
             {
                 return null;
             }
-            
+
             return currentTitleBlock;
 
         }
@@ -275,6 +275,19 @@ namespace SMJAddin
             }
 
             return newView;
+        }
+
+        public static View GetCurrentViewFromElement(Element ele)
+        {
+            Document doc = ele.Document;
+            if (doc == null)
+            {
+                return null;
+            }
+            else
+            {
+                return doc.ActiveView;
+            }
         }
 
 
