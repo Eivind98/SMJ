@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class SpaceTagsFixedDistance : IExternalCommand
+    public class SpaceTagsFixedDistanceHorizotal : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -50,7 +50,7 @@ namespace SMJAddin
                     {
                         trGr.Start("Space Tags Evenly");
 
-                        IndepententTagMethods.SpaceTagsFixedDistanceVerticale(tags, 1.5, Alignment.Center);
+                        IndepententTagMethods.SpaceTagsFixedDistanceHorizontal(tags, 1, Alignment.Center);
 
                         ICollection<ElementId> newSelection = new HashSet<ElementId>();
 

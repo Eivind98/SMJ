@@ -360,7 +360,7 @@ namespace SMJAddin
             }
             else
             {
-                return tags.MinBy(tag => tag.get_BoundingBox(view).Min.X).First();
+                return tags.MinBy(tag => GetTagBoundingBox(tag, view).Min.X).First();
             }
         }
 
@@ -376,17 +376,62 @@ namespace SMJAddin
             }
             else
             {
-                return tags.MaxBy(tag => tag.get_BoundingBox(view).Max.X).First();
+                return tags.MaxBy(tag => GetTagBoundingBox(tag, view).Max.X).First();
             }
+        }
+
+        public static XYZ TagGetEndPointOfLeader(IndependentTag tag)
+        {
+            Document doc = tag.Document;
+            LeaderEndCondition leaderEnd = tag.LeaderEndCondition;
+            XYZ thePoint;
+            if (tag.HasLeader)
+            {
+                if(leaderEnd == LeaderEndCondition.Attached)
+                {
+                    using (Transaction trans = new Transaction(doc))
+                    {
+                        trans.Start("Get Lead End");
+                        tag.LeaderEndCondition = LeaderEndCondition.Free;
+                        thePoint = tag.GetLeaderEnd(tag.GetTaggedReferences().First());
+                        trans.RollBack();
+                    }
+                }
+                else
+                {
+                    thePoint = tag.GetLeaderEnd(tag.GetTaggedReferences().First());
+                }
+            }
+            else
+            {
+                Element ele = doc.GetElement(tag.GetTaggedReferences().First().ElementId);
+                thePoint = (ele.Location as LocationPoint).Point;
+            }
+
+
+            return thePoint;
         }
 
         public static void SpaceTagsFixedDistanceVerticale(List<IndependentTag> tags, double distanceBetweenTags, Alignment alignment)
         {
-
             // Sort tags based on their combined Y and X positions.
-            tags = tags.OrderBy(p => p.TagHeadPosition.Y + p.TagHeadPosition.X).ToList();
+            tags = tags.OrderBy(p => TagGetEndPointOfLeader(p).Y).ToList();
             // Get the active view from the first tag's document.
-            View view = tags[0].Document.ActiveView;
+            Document doc = tags[0].Document;
+            View view = doc.ActiveView;
+
+            foreach (IndependentTag tag in tags)
+            {
+                if (tag.TagOrientation == TagOrientation.Vertical)
+                {
+                    using (Transaction trans = new Transaction(doc))
+                    {
+                        trans.Start("Change Tag Orientation");
+                        tag.TagOrientation = TagOrientation.Horizontal;
+                        trans.Commit();
+                    }
+                }
+            }
 
             // Initialize variables for total distance and bounding boxes.
             double totalDistance = 0;
@@ -448,6 +493,96 @@ namespace SMJAddin
                         BoundingBoxXYZ bounding = boundingBoxes[tags.IndexOf(tag)];
                         double tagHeight = bounding.Max.Y - bounding.Min.Y;
                         XYZ newPoint = new XYZ(startPoint.X, startPoint.Y + distanceSoFar + tagHeight / 2, startPoint.Z);
+                        PlaceTagByMidpoint(tag, newPoint, view);
+                        distanceSoFar += tagHeight + distanceBetweenTags;
+                    }
+                    break;
+                default:
+                    goto case Alignment.Center;
+            }
+        }
+
+        public static void SpaceTagsFixedDistanceHorizontal(List<IndependentTag> tags, double distanceBetweenTags, Alignment alignment)
+        {
+            // Sort tags based on their combined Y and X positions.
+            tags = tags.OrderBy(p => TagGetEndPointOfLeader(p).X).ToList();
+            // Get the active view from the first tag's document.
+            Document doc = tags[0].Document;
+            View view = doc.ActiveView;
+
+            foreach(IndependentTag tag in tags)
+            {
+                if(tag.TagOrientation == TagOrientation.Horizontal)
+                {
+                    using (Transaction trans = new Transaction(doc))
+                    {
+                        trans.Start("Change Tag Orientation");
+                        tag.TagOrientation = TagOrientation.Vertical;
+                        trans.Commit();
+                    }
+                }
+            }
+
+            // Initialize variables for total distance and bounding boxes.
+            double totalDistance = 0;
+            List<BoundingBoxXYZ> boundingBoxes = new List<BoundingBoxXYZ>();
+
+            // Calculate total distance and collect bounding boxes.
+            foreach (IndependentTag tag in tags)
+            {
+                BoundingBoxXYZ bounding = GetTagBoundingBox(tag, view);
+                boundingBoxes.Add(bounding);
+                double tagHeight = bounding.Max.X - bounding.Min.X;
+                totalDistance += tagHeight;
+            }
+
+            // Add the vertical spacing between tags.
+            totalDistance += distanceBetweenTags * (tags.Count - 1);
+
+            // Calculate the midpoint and starting point.
+            BoundingBoxXYZ boundingBox = GeneralMethods.GetBoundingBox(boundingBoxes);
+            double halfDistance = totalDistance / 2;
+            XYZ totalMin = boundingBox.Min;
+            XYZ totalMax = boundingBox.Max;
+            XYZ totalMid = totalMin.Add(totalMax.Subtract(totalMin).Divide(2));
+            XYZ startPoint;
+            double distanceSoFar = 0;
+
+            switch (alignment)
+            {
+                case Alignment.Left:
+                    startPoint = new XYZ(totalMin.X, totalMin.Y, totalMin.Z);
+
+                    foreach (IndependentTag tag in tags)
+                    {
+                        BoundingBoxXYZ bounding = boundingBoxes[tags.IndexOf(tag)];
+                        double tagHeight = bounding.Max.X - bounding.Min.X;
+                        XYZ newPoint = new XYZ(startPoint.X + distanceSoFar, startPoint.Y, startPoint.Z);
+                        MoveTagByBoundingboxMin(tag, newPoint, view);
+                        distanceSoFar += tagHeight + distanceBetweenTags;
+                    }
+                    break;
+                case Alignment.Right:
+                    startPoint = new XYZ(totalMax.X, totalMin.Y, totalMax.Z);
+
+                    foreach (IndependentTag tag in tags)
+                    {
+                        BoundingBoxXYZ bounding = boundingBoxes[tags.IndexOf(tag)];
+                        double tagHeight = bounding.Max.X - bounding.Min.X;
+                        distanceSoFar += tagHeight;
+                        XYZ newPoint = new XYZ(startPoint.X + distanceSoFar, startPoint.Y, startPoint.Z);
+                        MoveTagByBoundingboxMax(tag, newPoint, view);
+                        distanceSoFar += distanceBetweenTags;
+                    }
+                    break;
+                case Alignment.Center:
+                    startPoint = new XYZ(totalMid.X - halfDistance, totalMid.Y, totalMid.Z);
+
+                    foreach (IndependentTag tag in tags)
+                    {
+                        BoundingBoxXYZ bounding = boundingBoxes[tags.IndexOf(tag)];
+                        double tagHeight = bounding.Max.X - bounding.Min.X;
+                        XYZ newPoint = new XYZ(startPoint.X + distanceSoFar + tagHeight / 2, startPoint.Y, startPoint.Z);
                         PlaceTagByMidpoint(tag, newPoint, view);
                         distanceSoFar += tagHeight + distanceBetweenTags;
                     }

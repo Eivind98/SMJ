@@ -225,6 +225,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3B8EC1D5D577F7DFE458F7BE9A796BA9"
+        "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_40A74B37F18AA58AF14311BD6D4F789D"
         "OwnerKey" = "8:_96CBF4BBFEE9C8BA44CAD0E6EECDB488"
         "MsmSig" = "8:_UNDEFINED"
@@ -1413,6 +1419,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B466A3B3224979DBD208FD7E5B218A6D"
+        "OwnerKey" = "8:_3B8EC1D5D577F7DFE458F7BE9A796BA9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B466A3B3224979DBD208FD7E5B218A6D"
+        "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B598295920D8BB7F2C6040329317AC51"
         "OwnerKey" = "8:_9E22B0E4F5EF426FA9759FBA7F33CE53"
         "MsmSig" = "8:_UNDEFINED"
@@ -2033,6 +2051,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_3115D79E0224474A35F7F65085B6FD7A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3B8EC1D5D577F7DFE458F7BE9A796BA9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B466A3B3224979DBD208FD7E5B218A6D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2986,6 +3016,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3B8EC1D5D577F7DFE458F7BE9A796BA9"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MoreLinq, Version=3.4.2.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3B8EC1D5D577F7DFE458F7BE9A796BA9"
+                    {
+                    "Name" = "8:MoreLinq.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MoreLinq.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_40A74B37F18AA58AF14311BD6D4F789D"
             {
             "AssemblyRegister" = "3:1"
@@ -3843,6 +3904,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B466A3B3224979DBD208FD7E5B218A6D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B466A3B3224979DBD208FD7E5B218A6D"
+                    {
+                    "Name" = "8:System.ValueTuple.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.ValueTuple.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_28216ADB9ADE45F5AE4CBB6492CBFE9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B598295920D8BB7F2C6040329317AC51"
             {
             "AssemblyRegister" = "3:1"
@@ -4470,7 +4562,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SMJAddin"
         "ProductCode" = "8:{6206095D-7851-4A3C-BB27-61019FC2ECE5}"
-        "PackageCode" = "8:{ABA8D896-2105-40D8-B838-898472CA0730}"
+        "PackageCode" = "8:{C27F449C-374E-494A-9617-C74D946ABF2C}"
         "UpgradeCode" = "8:{496E59E3-48F5-4F60-9FFD-3E0AC74FF842}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

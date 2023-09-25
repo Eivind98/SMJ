@@ -24,6 +24,9 @@ namespace SMJAddin
             // Add a new ribbon panel
             RibbonPanel panelSpaces = application.CreateRibbonPanel(tabName, "Spaces");
 
+
+            //$"{Global.AssemblyDirectory}\\Pictures\\IconRoomImport.png"
+
             new ButtonBuilder("CreateOrUpdateSpaceFromLinkedFile", typeof(CopyRoomsFromLinkedFileAsSpaces))
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\IconRoomImport.png")
                 .Text("Create or Update\n Rooms from Linked file\nas Spaces")
@@ -41,15 +44,33 @@ namespace SMJAddin
 
             RibbonPanel panelTags = application.CreateRibbonPanel(tabName, "Tags");
 
+            SplitButtonData splitButtonData = new SplitButtonData("Tags", "Tag Functions");
+            SplitButton splitButton = panelTags.AddItem(splitButtonData) as SplitButton;
+
+            new ButtonBuilder("SpaceTagsFixedDistance", typeof(SpaceTagsFixedDistanceVert))
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignFixedDistance.png")
+                .Text("Space Tags\nFixed Distance")
+                .Build(splitButton);
+
             new ButtonBuilder("SpaceTagsEvenly", typeof(SpaceTagsEvenly))
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\SpaceEvenly.png")
                 .Text("Space Tags\nEvenly")
-                .Build(panelTags);
+                .Build(splitButton);
 
-            new ButtonBuilder("AlignTagsLeft", typeof(AlignTagsCenter))
+            new ButtonBuilder("AlignTagsLeft", typeof(AlignTagsLeft))
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignLeft.png")
                 .Text("Align Tags\nLeft")
-                .Build(panelTags);
+                .Build(splitButton);
+
+            new ButtonBuilder("AlignTagsCenter", typeof(AlignTagsCenter))
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignCenter.png")
+                .Text("Align Tags\nCenter")
+                .Build(splitButton);
+
+            new ButtonBuilder("AlignTagsRight", typeof(AlignTagsRight))
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignRight.png")
+                .Text("Align Tags\nRight")
+                .Build(splitButton);
 
             RibbonPanel Testing = application.CreateRibbonPanel(tabName, "Testing");
 
