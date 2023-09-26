@@ -47,7 +47,12 @@ namespace SMJAddin
             SplitButtonData splitButtonData = new SplitButtonData("Tags", "Tag Functions");
             SplitButton splitButton = panelTags.AddItem(splitButtonData) as SplitButton;
 
-            new ButtonBuilder("SpaceTagsFixedDistance", typeof(SpaceTagsFixedDistanceVert))
+            new ButtonBuilder("TagAllSimilar", typeof(TagAllSimilar))
+                .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\TagSimilar.png")
+                .Text("Tag All\nSimilar")
+                .Build(splitButton);
+
+            new ButtonBuilder("SpaceTagsFixedDistance", typeof(SpaceTagsFixedDistanceVertical))
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignFixedDistance.png")
                 .Text("Space Tags\nFixed Distance")
                 .Build(splitButton);
@@ -78,8 +83,6 @@ namespace SMJAddin
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\Tester.png")
                 .Text("Testing\nCreate Drawings")
                 .Build(Testing);
-
-
 
             return Result.Succeeded;
         }

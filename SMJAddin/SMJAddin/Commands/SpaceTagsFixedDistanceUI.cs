@@ -10,36 +10,31 @@ using System.Diagnostics;
 using System.Linq;
 using Autodesk.Revit.DB.Architecture;
 using System.Reflection.Emit;
+using Autodesk.Revit.DB.Events;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
+using SMJAddin.UI;
+using System.Windows.Input;
 
 #endregion
 
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class Tester : IExternalCommand
+    public class SpaceTagsFixedDistanceUI : IExternalCommand
     {
+
         public Result Execute(
           ExternalCommandData commandData,
           ref string message,
           ElementSet elements)
         {
-            var uiapp = commandData.Application;
-            var uidoc = uiapp.ActiveUIDocument;
-            var app = uiapp.Application;
-            var doc = uidoc.Document;
+            EventPlaceTagsFixedDistance handler = new EventPlaceTagsFixedDistance();
+            ExternalEvent exEvent = ExternalEvent.Create(handler);
 
-            var sel = uidoc.Selection;
-            var eleIds = sel.GetElementIds();
+            SpaceTagsFixedDistance test = new SpaceTagsFixedDistance(commandData.Application.ActiveUIDocument, exEvent, handler);
 
-            using (var tx = new TransactionGroup(doc))
-            {
-                tx.Start("Tagging all similar");
-
-                IndepententTagMethods.TagAllFamiliesSimilar(doc.GetElement(eleIds.First()));
-
-
-                tx.Assimilate();
-            }
+            test.InitializeComponent();
 
 
             return Result.Succeeded;

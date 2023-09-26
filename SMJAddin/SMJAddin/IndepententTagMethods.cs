@@ -7,12 +7,137 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.UI;
 using MoreLinq;
+using System.Windows.Controls;
 
 namespace SMJAddin
 {
 
     public static class IndepententTagMethods
     {
+        public static void TagAllFamiliesSimilar(Element element)
+        {
+            Document doc = element.Document;
+
+            if (element is IndependentTag tag)
+            {
+                ElementId viewId = tag.OwnerViewId;
+                View view = doc.GetElement(viewId) as View;
+                Element hostElement = doc.GetElement(tag.GetTaggedReferences().FirstOrDefault().ElementId);
+                XYZ hostLocation = (hostElement.Location as LocationPoint).Point;
+                XYZ tagLocation = GetMidPointOfElement(tag, view);
+
+                Double hostRotation = (hostElement.Location as LocationPoint).Rotation;
+                ElementId familyId = hostElement.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM).AsElementId();
+
+                XYZ translation = tagLocation.Subtract(hostLocation);
+                bool leader = tag.HasLeader;
+                TagOrientation originalOrientation = tag.TagOrientation;
+
+                double orientationInverter = 0;
+
+                if (!(Math.Round(Math.Round(hostRotation, 2) % Math.Round(Math.PI, 2), 2) == 0 ^ originalOrientation == TagOrientation.Horizontal))
+                {
+                    orientationInverter = Math.Round(Math.PI, 2) / 2;
+                }
+
+                ElementId symbolId = tag.GetTypeId();
+
+                BuiltInCategory hostCategory = hostElement.Category.BuiltInCategory;
+
+                var tagsInView = new FilteredElementCollector(doc, viewId).OfCategory(tag.Category.BuiltInCategory).Where(x => x is IndependentTag).Select(x => (IndependentTag)x).ToList();
+                var allTaggedElements = tagsInView.Select(x => x.GetTaggedElementIds().First().HostElementId).ToList();
+
+                var allSimilarElements = new FilteredElementCollector(doc, viewId).OfCategory(hostCategory).ToList().FindAll(x => x.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM).AsElementId() == familyId);
+                var allSimilarElementsInViewIds = allSimilarElements.Select(x => x.Id).ToList();
+
+                foreach (ElementId eleId in allSimilarElementsInViewIds)
+                {
+                    int indexInList = allTaggedElements.IndexOf(eleId);
+
+                    Element theElement = doc.GetElement(eleId);
+                    XYZ elementLocation = (theElement.Location as LocationPoint).Point;
+                    Double eleRotation = (theElement.Location as LocationPoint).Rotation;
+
+                    Double finalRotation = eleRotation - hostRotation;
+                    XYZ rotatedTranslation = Rotate(translation, finalRotation);
+
+                    XYZ finalHeadLocation = elementLocation.Add(rotatedTranslation);
+
+                    TagOrientation tagOrientation = TagOrientation.Horizontal;
+
+                    if (Math.Round(Math.Round(eleRotation, 2) % Math.Round(Math.PI, 2), 2) == orientationInverter)
+                    {
+                        tagOrientation = TagOrientation.Vertical;
+                    }
+
+                    if (indexInList == -1)
+                    {
+                        IndependentTag newTag;
+                        //Create Tag
+                        using (var tx = new Transaction(doc))
+                        {
+                            tx.Start("Create Tag");
+
+                            newTag = IndependentTag.Create(doc, symbolId, viewId, new Reference(theElement), leader, tagOrientation, finalHeadLocation);
+
+                            tx.Commit();
+                        }
+                        PlaceTagByMidpoint(newTag, finalHeadLocation, view);
+                    }
+                    else
+                    {
+                        IndependentTag tagOfElement = tagsInView[indexInList];
+
+                        using (var tx = new Transaction(doc))
+                        {
+                            tx.Start("Edit Tag");
+
+                            tagOfElement.ChangeTypeId(symbolId);
+                            tagOfElement.TagOrientation = tagOrientation;
+                            tagOfElement.HasLeader = leader;
+
+                            tx.Commit();
+                        }
+
+                        PlaceTagByMidpoint(tagOfElement, finalHeadLocation, view);
+
+                    }
+                }
+            }
+        }
+
+        public static XYZ GetMidPointOfElement(Element element, View view)
+        {
+            BoundingBoxXYZ bounding;
+            if (element is IndependentTag)
+            {
+                bounding = GetTagBoundingBox(element as IndependentTag, view);
+            }
+            else
+            {
+                bounding = element.get_BoundingBox(view);
+            }
+
+            XYZ max = bounding.Max;
+            XYZ min = bounding.Min;
+
+            XYZ middlePoint = min.Add(max.Subtract(min) / 2);
+
+            return middlePoint;
+        }
+
+        public static XYZ Rotate(XYZ vector, Double radians)
+        {
+            double x = vector.X;
+            double y = vector.Y;
+
+            double nX = x * Math.Cos(radians) - y * Math.Sin(radians);
+            double nY = x * Math.Sin(radians) + y * Math.Cos(radians);
+
+            return new XYZ(nX, nY, vector.Z);
+        }
+
+
         public static void TagFamily(FamilyInstance instance)
         {
             XYZ direction = instance.FacingOrientation.Normalize();
@@ -260,6 +385,18 @@ namespace SMJAddin
                 XYZ existingTagHeadPosition = tag.TagHeadPosition;
                 XYZ newTagHeadPosition;
 
+                if (!tag.HasLeader)
+                {
+                    using (Transaction trans = new Transaction(doc))
+                    {
+                        trans.Start("Activate Leader");
+
+                        tag.HasLeader = true;
+
+                        trans.Commit();
+                    }
+                }
+
                 using (Transaction trans = new Transaction(doc))
                 {
                     trans.Start("Determine Tag Dimension");
@@ -344,7 +481,7 @@ namespace SMJAddin
             foreach (IndependentTag tag in tags)
             {
                 XYZ newPoint = new XYZ(leftX, tag.TagHeadPosition.Y, tag.TagHeadPosition.Z);
-                MoveTagHeadToPoint(tag, newPoint);
+                MoveTagHeadToPointTX(tag, newPoint);
             }
         }
 
@@ -387,7 +524,7 @@ namespace SMJAddin
             XYZ thePoint;
             if (tag.HasLeader)
             {
-                if(leaderEnd == LeaderEndCondition.Attached)
+                if (leaderEnd == LeaderEndCondition.Attached)
                 {
                     using (Transaction trans = new Transaction(doc))
                     {
@@ -510,9 +647,9 @@ namespace SMJAddin
             Document doc = tags[0].Document;
             View view = doc.ActiveView;
 
-            foreach(IndependentTag tag in tags)
+            foreach (IndependentTag tag in tags)
             {
-                if(tag.TagOrientation == TagOrientation.Horizontal)
+                if (tag.TagOrientation == TagOrientation.Horizontal)
                 {
                     using (Transaction trans = new Transaction(doc))
                     {
@@ -624,7 +761,7 @@ namespace SMJAddin
 
                 var newPoint = firstTagHeadPoint.Add(Segment.Multiply(i));
 
-                MoveTagHeadToPoint(tag, newPoint);
+                MoveTagHeadToPointTX(tag, newPoint);
             }
         }
 
@@ -642,7 +779,7 @@ namespace SMJAddin
             XYZ pointTagHead = tag.TagHeadPosition;
             XYZ pointDifference = pointTagHead.Subtract(pointMin);
 
-            MoveTagHeadToPoint(tag, Point.Add(pointDifference));
+            MoveTagHeadToPointTX(tag, Point.Add(pointDifference));
         }
 
         public static void MoveTagByBoundingboxMax(IndependentTag tag, XYZ Point, View view)
@@ -651,11 +788,11 @@ namespace SMJAddin
             XYZ pointTagHead = tag.TagHeadPosition;
             XYZ pointDifference = pointTagHead.Subtract(pointMax);
 
-            MoveTagHeadToPoint(tag, Point.Add(pointDifference));
+            MoveTagHeadToPointTX(tag, Point.Add(pointDifference));
         }
 
 
-        public static void MoveTagHeadToPoint(IndependentTag tag, XYZ Point)
+        public static void MoveTagHeadToPointTX(IndependentTag tag, XYZ Point)
         {
             using (Transaction trans = new Transaction(tag.Document))
             {
@@ -671,5 +808,13 @@ namespace SMJAddin
             }
         }
 
+        public static void MoveTagHeadToPoint(IndependentTag tag, XYZ Point)
+        {
+            tag.TagHeadPosition = Point;
+
+            //Wiggle to make sure Revit registers the change. Otherwise it doesn't for some reason
+            tag.Location.Move(new XYZ(2, 0, 0));
+            tag.Location.Move(new XYZ(-2, 0, 0));
+        }
     }
 }

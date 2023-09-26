@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class Tester : IExternalCommand
+    public class TagAllSimilar : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -33,7 +33,7 @@ namespace SMJAddin
 
             using (var tx = new TransactionGroup(doc))
             {
-                tx.Start("Tagging all similar");
+                tx.Start("Tag All Similar");
 
                 IndepententTagMethods.TagAllFamiliesSimilar(doc.GetElement(eleIds.First()));
 

@@ -48,7 +48,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Name="lbl" Grid.Column="0" Content="Distance Between tags (mm):"></Label>
-                <TextBox x:Name="textBoxDistance" Grid.Column="1" VerticalContentAlignment="Center">
+                <TextBox x:Name="textBoxDistance" Grid.Column="1" Text="200" VerticalContentAlignment="Center">
                     
                 </TextBox>
             </Grid>

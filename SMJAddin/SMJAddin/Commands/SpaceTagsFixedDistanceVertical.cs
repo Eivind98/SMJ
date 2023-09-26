@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 namespace SMJAddin
 {
     [Transaction(TransactionMode.Manual)]
-    public class SpaceTagsFixedDistanceVert : IExternalCommand
+    public class SpaceTagsFixedDistanceVertical : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,

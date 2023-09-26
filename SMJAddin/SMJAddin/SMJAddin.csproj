@@ -88,8 +88,10 @@
     <Compile Include="Commands\MoveRoomLocationToCenter.cs" />
     <Compile Include="Commands\AlignTagsCenter.cs" />
     <Compile Include="Commands\SpaceTagsFixedDistanceHorizotal.cs" />
-    <Compile Include="Commands\SpaceTagsFixedDistanceVert.cs" />
+    <Compile Include="Commands\SpaceTagsFixedDistanceVertical.cs" />
     <Compile Include="Commands\SpaceTagsEvenly.cs" />
+    <Compile Include="Commands\SpaceTagsFixedDistanceUI.cs" />
+    <Compile Include="Commands\TagAllSimilar.cs" />
     <Compile Include="Triggers\TriggerTitleBlockChanged.cs" />
     <Compile Include="Triggers\TriggerSheetNumber.cs" />
     <Compile Include="Triggers\TriggerSheetName.cs" />
@@ -139,6 +141,7 @@
     <Content Include="Pictures\SpaceEvenly.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Pictures\TagSimilar.png" />
     <Content Include="Pictures\Tester.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

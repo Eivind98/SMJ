@@ -14,6 +14,7 @@ using Autodesk.Revit.DB.Events;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using SMJAddin.UI;
+using System.Windows.Input;
 
 #endregion
 
@@ -28,8 +29,10 @@ namespace SMJAddin
           ref string message,
           ElementSet elements)
         {
+            EventPlaceTagsFixedDistance handler = new EventPlaceTagsFixedDistance();
+            ExternalEvent exEvent = ExternalEvent.Create(handler);
 
-            SpaceTagsFixedDistance test = new SpaceTagsFixedDistance(commandData.Application.ActiveUIDocument);
+            SpaceTagsFixedDistance test = new SpaceTagsFixedDistance(commandData.Application.ActiveUIDocument, exEvent, handler);
 
             test.InitializeComponent();
 

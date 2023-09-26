@@ -19,6 +19,9 @@ using System.Windows.Shapes;
 
 namespace SMJAddin.UI
 {
+
+
+
     /// <summary>
     /// Interaction logic for SpaceTagsFixedDistance.xaml
     /// </summary>
@@ -27,11 +30,17 @@ namespace SMJAddin.UI
         public UIDocument UIDoc;
         public Document doc;
 
-        public SpaceTagsFixedDistance(UIDocument UIdocument)
+        ExternalEvent M_exEvent { get; set; }
+        EventPlaceTagsFixedDistance MyEvent { get; set; }
+
+        public SpaceTagsFixedDistance(UIDocument UIdocument, ExternalEvent exEvent, EventPlaceTagsFixedDistance handler)
         {
             InitializeComponent();
             UIDoc = UIdocument;
             doc = UIDoc.Document;
+            M_exEvent = exEvent;
+            MyEvent = handler;
+
 
             Window AWindow = new Window()
             {
@@ -52,12 +61,64 @@ namespace SMJAddin.UI
 
         private void btnApply_Click(object sender, RoutedEventArgs e)
         {
-            using (Transaction trans = new Transaction(doc))
+            string stringDistance = textBoxDistance.Text;
+            double numberDistance;
+            var testing = double.TryParse(stringDistance, out numberDistance);
+
+            if (testing)
             {
-                trans.Start("Change Tag Orientation");
-                
-                trans.Commit();
+                Global.EventDistance = numberDistance / 304.8;
             }
+
+
+
+            if ((lstBoxItemHorizontalOrVertical.SelectedItem as ComboBoxItem).Content.ToString() == "Vertical")
+            {
+                Global.EventTagOrientation = TagOrientation.Vertical;
+            }
+            else
+            {
+                Global.EventTagOrientation = TagOrientation.Horizontal;
+            }
+
+            string alignTo = (lstBoxItemAlignTo.SelectedItem as ComboBoxItem).Content.ToString();
+
+            if (alignTo == "Left")
+            {
+                Global.EventTagAlignment = Alignment.Left;
+            }
+            else if (alignTo == "Center")
+            {
+                Global.EventTagAlignment = Alignment.Center;
+            }
+            else if (alignTo == "Right")
+            {
+                Global.EventTagAlignment = Alignment.Right;
+            }
+
+            List<IndependentTag> tags = new List<IndependentTag>();
+
+            var elementIds = UIDoc.Selection.GetElementIds();
+            foreach (var elementId in elementIds)
+            {
+                Element ele = doc.GetElement(elementId);
+                if (ele is IndependentTag)
+                {
+                    tags.Add((IndependentTag)ele);
+                }
+            }
+
+            if(tags.Count > 0 && testing)
+            {
+                Global.EventTags = tags;
+                M_exEvent.Raise();
+            }
+            else
+            {
+                TaskDialog.Show("No tags selected", "There are no tags selected");
+            }
+
+
         }
     }
 }
