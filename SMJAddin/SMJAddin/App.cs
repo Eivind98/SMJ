@@ -52,7 +52,7 @@ namespace SMJAddin
                 .Text("Tag All\nSimilar")
                 .Build(splitButton);
 
-            new ButtonBuilder("SpaceTagsFixedDistance", typeof(SpaceTagsFixedDistanceVertical))
+            new ButtonBuilder("SpaceTagsFixedDistance", typeof(SpaceTagsFixedDistanceUI))
                 .ImagePath($"{Global.AssemblyDirectory}\\Pictures\\AlignFixedDistance.png")
                 .Text("Space Tags\nFixed Distance")
                 .Build(splitButton);
